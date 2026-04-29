@@ -1,0 +1,725 @@
+{
+  "info": {
+    "_postman_id": "bab7236a-701a-46cf-b5c8-707c0ebc6d18",
+    "name": "Salon POS Backend",
+    "description": "Interview submission collection for Salon POS Backend (Core APIs + RBAC + Audit Logs). Run folders in order.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19354841"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Core Setup (ADMIN)",
+      "item": [
+        {
+          "name": "Create Membership Plan (for member linking)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var r=pm.response.json(); if(r && r.data && r.data.id) pm.collectionVariables.set('membershipPlanId', r.data.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Value for money Plan\",\n  \"price\": 2999,\n  \"discountPercent\": 12,\n  \"benefits\": [\"Priority booking\", \"Birthday offer\"],\n  \"isActive\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/membership-plans",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership-plans"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Member",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var r=pm.response.json(); if(r && r.data && r.data.id) pm.collectionVariables.set('memberId', r.data.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Parth\",\n  \"phone\": \"9898778935\",\n  \"email\": \"parth+33@gmail.com\",\n  \"membershipPlanId\": \"cmok1qki00003u3kkclzgkus5\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Discount",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var r=pm.response.json(); if(r && r.data && r.data.id) pm.collectionVariables.set('discountId', r.data.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Weekend 21\",\n  \"type\": \"PERCENTAGE\",\n  \"value\": 15,\n  \"appliesTo\": \"All Services\",\n  \"isActive\": false,\n  \"validFrom\": \"2026-04-01T00:00:00.000Z\",\n  \"validTo\": \"2026-12-31T23:59:59.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/discounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "discounts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Package",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var r=pm.response.json(); if(r && r.data && r.data.id) pm.collectionVariables.set('packageId', r.data.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bridal Combo without family\",\n  \"description\": \"Makeup + Hair + Facial\",\n  \"price\": 9999,\n  \"originalPrice\": 12999,\n  \"services\": [\"Makeup\", \"Hair Styling\", \"Facial\"],\n  \"isActive\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/packages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "packages"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Core Reads & Filters",
+      "item": [
+        {
+          "name": "Get Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Member By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/members/cmok1miyd0002u3kk33azb7z9",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "members",
+                "cmok1miyd0002u3kk33azb7z9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Discounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/discounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "discounts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Discounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/discounts?active=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "discounts"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "false",
+                  "description": "true/false"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET InActive Discounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/discounts?active=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "discounts"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "false",
+                  "description": "true/false"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Packages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/packages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "packages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Packages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/packages?active=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "packages"
+              ],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "false",
+                  "description": "true/false"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Membership Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership-plans",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership-plans"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Loyalty Flow",
+      "item": [
+        {
+          "name": "Get Loyalty Rules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loyalty/rules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "loyalty",
+                "rules"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Loyalty Config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/loyalty/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "loyalty",
+                "config"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Earn Points (STAFF)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{staffUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{staffUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "STAFF"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"cmok2a7hr0005u3kso5nss0ka\",\n  \"sourceType\": \"PRODUCT\", //SERVICE\\PRODUCT\\REFERRAL\\MANUAL\n  \"billAmount\": 2500,\n  \"notes\": \"Product bill\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/loyalty/earn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "loyalty",
+                "earn"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Redeem Points (STAFF)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{staffUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{staffUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "STAFF"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"cmok2a7hr0005u3kso5nss0ka\",\n  \"points\": 100,\n  \"notes\": \"Redeem\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/loyalty/redeem",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "loyalty",
+                "redeem"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Leaderboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/leaderboard?limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "leaderboard"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RBAC Checks (Expected 403)",
+      "item": [
+        {
+          "name": "STAFF -> POST /api/discounts (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-user-id",
+                "value": "{{staffUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{staffUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "STAFF"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Should Fail\",\n  \"type\": \"PERCENTAGE\",\n  \"value\": 10,\n  \"appliesTo\": \"All Services\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/discounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "discounts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "STAFF -> GET /api/audit-logs (403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "{{staffUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{staffUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "STAFF"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/audit-logs?limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "audit-logs"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audit Logs (ADMIN)",
+      "item": [
+        {
+          "name": "GET Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/audit-logs?limit=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "audit-logs"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "memberId",
+      "value": ""
+    },
+    {
+      "key": "membershipPlanId",
+      "value": ""
+    },
+    {
+      "key": "discountId",
+      "value": ""
+    },
+    {
+      "key": "packageId",
+      "value": ""
+    },
+    {
+      "key": "adminUserId",
+      "value": "u-admin-1"
+    },
+    {
+      "key": "adminUserName",
+      "value": "Admin User"
+    },
+    {
+      "key": "staffUserId",
+      "value": "u-staff-1"
+    },
+    {
+      "key": "staffUserName",
+      "value": "Staff User"
+    }
+  ]
+}
