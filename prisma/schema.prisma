@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FLAT
+}
+
+enum LoyaltySourceType {
+  SERVICE
+  PRODUCT
+  REFERRAL
+  MANUAL
+  REDEMPTION
+}
+
+enum LoyaltyTransactionType {
+  EARN
+  REDEEM
+  ADJUST
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+model Member {
+  id               String               @id @default(cuid())
+  fullName         String
+  phone            String               @unique
+  email            String?              @unique
+  loyaltyPoints    Int                  @default(0)
+  membershipPlanId String?
+  membershipPlan   MembershipPlan?      @relation(fields: [membershipPlanId], references: [id], onDelete: SetNull)
+  transactions     LoyaltyTransaction[]
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+}
+
+model Discount {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  type        DiscountType
+  value       Float
+  appliesTo   String
+  isActive    Boolean      @default(true)
+  validFrom   DateTime?
+  validTo     DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model ServicePackage {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  description   String?
+  price         Float
+  originalPrice Float?
+  servicesJson  String
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model MembershipPlan {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  price           Float
+  discountPercent Float    @default(0)
+  benefitsJson    String
+  isActive        Boolean  @default(true)
+  members         Member[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model LoyaltyRule {
+  id                   String            @id @default(cuid())
+  sourceType           LoyaltySourceType @unique
+  pointsPerAmount      Float
+  amountBase           Float             @default(100)
+  referralBonusPoints  Int               @default(0)
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+}
+
+model LoyaltyConfig {
+  id                        String   @id @default("default")
+  minPointsToRedeem         Int      @default(100)
+  pointsToCurrencyValue     Float    @default(10)
+  pointsConversionBase      Int      @default(100)
+  maxRedeemCurrencyPerVisit Float    @default(500)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+}
+
+model LoyaltyTransaction {
+  id              String                 @id @default(cuid())
+  memberId        String
+  member          Member                 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  transactionType LoyaltyTransactionType
+  sourceType      LoyaltySourceType
+  billAmount      Float?
+  points          Int
+  currencyValue   Float?
+  notes           String?
+  createdAt       DateTime               @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actorName  String
+  actorRole  UserRole
+  action     String
+  entityType String
+  entityId   String?
+  details    String?
+  createdAt  DateTime @default(now())
+}
