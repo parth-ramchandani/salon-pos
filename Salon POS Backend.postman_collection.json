@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "bab7236a-701a-46cf-b5c8-707c0ebc6d18",
+    "_postman_id": "e3edb5dc-8359-4730-a4d8-983502ef3860",
     "name": "Salon POS Backend",
     "description": "Interview submission collection for Salon POS Backend (Core APIs + RBAC + Audit Logs). Run folders in order.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -676,6 +676,139 @@
                   "key": "limit",
                   "value": "50"
                 }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cleanup (ADMIN)",
+      "item": [
+        {
+          "name": "Delete Discount",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/discounts/cmok5zy53000bu3o47t0jr3jc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "discounts",
+                "cmok5zy53000bu3o47t0jr3jc"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Package",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/packages/cmok60umg000eu3o4kb9nllpl",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "packages",
+                "cmok60umg000eu3o4kb9nllpl"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Member",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/members/cmok5y94e0008u3o408zpl8lf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "members",
+                "cmok5y94e0008u3o408zpl8lf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Membership Plan",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "{{adminUserId}}"
+              },
+              {
+                "key": "x-user-name",
+                "value": "{{adminUserName}}"
+              },
+              {
+                "key": "x-user-role",
+                "value": "ADMIN"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership-plans/cmok5tts30000u3o46hat2do2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership-plans",
+                "cmok5tts30000u3o46hat2do2"
               ]
             }
           },
